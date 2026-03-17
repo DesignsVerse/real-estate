@@ -19,14 +19,18 @@ export default function Properties() {
     propertyType: searchParams.get('propertyType') || '',
     minPrice: searchParams.get('minPrice') || '',
     maxPrice: searchParams.get('maxPrice') || '',
+    bedrooms: searchParams.get('bedrooms') || '',
+    possessionStatus: searchParams.get('possessionStatus') || '',
   });
 
   const { data, isLoading } = useListProperties({
     location: filters.location || undefined,
     type: filters.type || undefined,
+    propertyType: filters.propertyType || undefined,
     minPrice: filters.minPrice ? Number(filters.minPrice) : undefined,
     maxPrice: filters.maxPrice ? Number(filters.maxPrice) : undefined,
-    limit: 20
+    bedrooms: filters.bedrooms && filters.bedrooms !== '4+' ? Number(filters.bedrooms) : undefined,
+    limit: 50
   });
 
   const handleFilterChange = (key: string, value: string) => {
@@ -34,9 +38,15 @@ export default function Properties() {
   };
 
   const clearFilters = () => {
-    setFilters({ location: '', type: '', propertyType: '', minPrice: '', maxPrice: '' });
+    setFilters({ location: '', type: '', propertyType: '', minPrice: '', maxPrice: '', bedrooms: '', possessionStatus: '' });
     setLoc('/properties');
   };
+
+  const filteredProperties = data?.properties?.filter(p => {
+    if (filters.bedrooms === '4+' && p.bedrooms < 4) return false;
+    if (filters.possessionStatus && p.possessionStatus !== filters.possessionStatus) return false;
+    return true;
+  });
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -90,11 +100,66 @@ export default function Properties() {
               </div>
 
               <div>
-                <label className="text-sm font-medium mb-2 block">Price Range</label>
+                <label className="text-sm font-medium mb-2 block">Property Type</label>
+                <Select value={filters.propertyType} onValueChange={(v) => handleFilterChange('propertyType', v === 'any' ? '' : v)}>
+                  <SelectTrigger className="bg-muted/50 border-none">
+                    <SelectValue placeholder="Any" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="any">Any</SelectItem>
+                    <SelectItem value="apartment">Apartment</SelectItem>
+                    <SelectItem value="house">House</SelectItem>
+                    <SelectItem value="villa">Villa</SelectItem>
+                    <SelectItem value="commercial">Commercial</SelectItem>
+                    <SelectItem value="land">Land</SelectItem>
+                    <SelectItem value="builder_floor">Builder Floor</SelectItem>
+                    <SelectItem value="row_house">Row House</SelectItem>
+                    <SelectItem value="farmhouse">Farmhouse</SelectItem>
+                    <SelectItem value="penthouse">Penthouse</SelectItem>
+                    <SelectItem value="pg_hostel">PG / Hostel</SelectItem>
+                    <SelectItem value="co_living">Co-Living</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-2 block">BHK</label>
+                <Select value={filters.bedrooms} onValueChange={(v) => handleFilterChange('bedrooms', v === 'any' ? '' : v)}>
+                  <SelectTrigger className="bg-muted/50 border-none">
+                    <SelectValue placeholder="Any" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="any">Any</SelectItem>
+                    <SelectItem value="1">1 BHK</SelectItem>
+                    <SelectItem value="2">2 BHK</SelectItem>
+                    <SelectItem value="3">3 BHK</SelectItem>
+                    <SelectItem value="4">4 BHK</SelectItem>
+                    <SelectItem value="4+">4+ BHK</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-2 block">Possession Status</label>
+                <Select value={filters.possessionStatus} onValueChange={(v) => handleFilterChange('possessionStatus', v === 'any' ? '' : v)}>
+                  <SelectTrigger className="bg-muted/50 border-none">
+                    <SelectValue placeholder="Any" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="any">Any</SelectItem>
+                    <SelectItem value="ready_to_move">Ready to Move</SelectItem>
+                    <SelectItem value="under_construction">Under Construction</SelectItem>
+                    <SelectItem value="new_launch">New Launch</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-2 block">Price Range (₹)</label>
                 <div className="flex items-center gap-2">
                   <Input 
                     type="number" 
-                    placeholder="Min" 
+                    placeholder="Min (₹)" 
                     className="bg-muted/50 border-none"
                     value={filters.minPrice}
                     onChange={(e) => handleFilterChange('minPrice', e.target.value)}
@@ -102,7 +167,7 @@ export default function Properties() {
                   <span className="text-muted-foreground">-</span>
                   <Input 
                     type="number" 
-                    placeholder="Max" 
+                    placeholder="Max (₹)" 
                     className="bg-muted/50 border-none"
                     value={filters.maxPrice}
                     onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
@@ -119,7 +184,7 @@ export default function Properties() {
         <main className="flex-1">
           <div className="mb-6 flex justify-between items-center">
             <p className="text-muted-foreground">
-              Showing <span className="font-semibold text-foreground">{data?.properties.length || 0}</span> results
+              Showing <span className="font-semibold text-foreground">{filteredProperties?.length || 0}</span> results
             </p>
           </div>
 
@@ -127,9 +192,9 @@ export default function Properties() {
             <div className="flex items-center justify-center py-32">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
-          ) : data?.properties && data.properties.length > 0 ? (
+          ) : filteredProperties && filteredProperties.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {data.properties.map(property => (
+              {filteredProperties.map(property => (
                 <PropertyCard key={property.id} property={property} />
               ))}
             </div>

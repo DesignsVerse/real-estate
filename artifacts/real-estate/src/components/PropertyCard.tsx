@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { Badge } from "@/components/ui/badge";
 import { Bed, Bath, Square, MapPin } from "lucide-react";
 import type { Property } from "@workspace/api-client-react";
+import { formatINR, formatBHK } from "@/lib/formatINR";
 
 export function PropertyCard({ property }: { property: Property }) {
   const primaryImage = property.images?.find(i => i.isPrimary)?.url 
@@ -28,10 +29,22 @@ export function PropertyCard({ property }: { property: Property }) {
           )}
         </div>
         <div className="absolute bottom-4 left-4 right-4">
-          <p className="font-display text-2xl font-bold text-white drop-shadow-md">
-            ${property.price.toLocaleString()}
-            {property.type === 'rent' && <span className="text-sm font-normal opacity-80">/mo</span>}
-          </p>
+          <div className="font-display text-2xl font-bold text-white drop-shadow-md flex flex-col gap-1.5">
+            <span>{formatINR(property.price, property.type === 'rent')}</span>
+            {property.possessionStatus && (
+              <Badge 
+                className={`w-fit text-xs font-medium border-none shadow-sm backdrop-blur-sm ${
+                  property.possessionStatus === 'ready_to_move' ? 'bg-green-500/90 text-white hover:bg-green-500/90' : 
+                  property.possessionStatus === 'under_construction' ? 'bg-orange-500/90 text-white hover:bg-orange-500/90' : 
+                  'bg-blue-500/90 text-white hover:bg-blue-500/90'
+                }`}
+              >
+                {property.possessionStatus === 'ready_to_move' ? 'Ready to Move' : 
+                 property.possessionStatus === 'under_construction' ? 'Under Construction' : 
+                 'New Launch'}
+              </Badge>
+            )}
+          </div>
         </div>
       </div>
       
@@ -47,7 +60,7 @@ export function PropertyCard({ property }: { property: Property }) {
         <div className="mt-4 mb-6 flex items-center justify-between border-y border-border/50 py-3">
           <div className="flex items-center gap-1.5 text-sm text-foreground font-medium">
             <Bed size={18} className="text-muted-foreground" />
-            <span>{property.bedrooms} Beds</span>
+            <span>{formatBHK(property.bedrooms)}</span>
           </div>
           <div className="flex items-center gap-1.5 text-sm text-foreground font-medium">
             <Bath size={18} className="text-muted-foreground" />

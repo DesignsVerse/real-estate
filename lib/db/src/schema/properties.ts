@@ -34,6 +34,13 @@ export const propertiesTable = pgTable("properties", {
   agentPhone: text("agent_phone"),
   agentEmail: text("agent_email"),
   featured: boolean("featured").notNull().default(false),
+  possessionStatus: text("possession_status").default("ready_to_move"),
+  possessionDate: timestamp("possession_date"),
+  facing: text("facing"),
+  vastuCompliant: boolean("vastu_compliant").notNull().default(false),
+  nearbyMetro: text("nearby_metro"),
+  nearbySchool: text("nearby_school"),
+  nearbyHospital: text("nearby_hospital"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

@@ -67,6 +67,21 @@ export const ListPropertiesResponse = zod.object({
       agentPhone: zod.string().nullish(),
       agentEmail: zod.string().nullish(),
       featured: zod.boolean(),
+      possessionStatus: zod
+        .string()
+        .nullish()
+        .describe("ready_to_move | under_construction | new_launch"),
+      possessionDate: zod.date().nullish(),
+      facing: zod
+        .string()
+        .nullish()
+        .describe(
+          "East | West | North | South | North-East | North-West | South-East | South-West",
+        ),
+      vastuCompliant: zod.boolean().nullish(),
+      nearbyMetro: zod.string().nullish(),
+      nearbySchool: zod.string().nullish(),
+      nearbyHospital: zod.string().nullish(),
       createdAt: zod.date(),
       updatedAt: zod.date(),
     }),
@@ -103,6 +118,13 @@ export const CreatePropertyBody = zod.object({
   agentPhone: zod.string().nullish(),
   agentEmail: zod.string().nullish(),
   featured: zod.boolean().default(createPropertyBodyFeaturedDefault),
+  possessionStatus: zod.string().nullish(),
+  possessionDate: zod.date().nullish(),
+  facing: zod.string().nullish(),
+  vastuCompliant: zod.boolean().nullish(),
+  nearbyMetro: zod.string().nullish(),
+  nearbySchool: zod.string().nullish(),
+  nearbyHospital: zod.string().nullish(),
 });
 
 /**
@@ -144,6 +166,21 @@ export const GetPropertyResponse = zod.object({
   agentPhone: zod.string().nullish(),
   agentEmail: zod.string().nullish(),
   featured: zod.boolean(),
+  possessionStatus: zod
+    .string()
+    .nullish()
+    .describe("ready_to_move | under_construction | new_launch"),
+  possessionDate: zod.date().nullish(),
+  facing: zod
+    .string()
+    .nullish()
+    .describe(
+      "East | West | North | South | North-East | North-West | South-East | South-West",
+    ),
+  vastuCompliant: zod.boolean().nullish(),
+  nearbyMetro: zod.string().nullish(),
+  nearbySchool: zod.string().nullish(),
+  nearbyHospital: zod.string().nullish(),
   createdAt: zod.date(),
   updatedAt: zod.date(),
 });
@@ -175,6 +212,13 @@ export const UpdatePropertyBody = zod.object({
   agentPhone: zod.string().nullish(),
   agentEmail: zod.string().nullish(),
   featured: zod.boolean().optional(),
+  possessionStatus: zod.string().nullish(),
+  possessionDate: zod.date().nullish(),
+  facing: zod.string().nullish(),
+  vastuCompliant: zod.boolean().nullish(),
+  nearbyMetro: zod.string().nullish(),
+  nearbySchool: zod.string().nullish(),
+  nearbyHospital: zod.string().nullish(),
 });
 
 export const UpdatePropertyResponse = zod.object({
@@ -209,6 +253,21 @@ export const UpdatePropertyResponse = zod.object({
   agentPhone: zod.string().nullish(),
   agentEmail: zod.string().nullish(),
   featured: zod.boolean(),
+  possessionStatus: zod
+    .string()
+    .nullish()
+    .describe("ready_to_move | under_construction | new_launch"),
+  possessionDate: zod.date().nullish(),
+  facing: zod
+    .string()
+    .nullish()
+    .describe(
+      "East | West | North | South | North-East | North-West | South-East | South-West",
+    ),
+  vastuCompliant: zod.boolean().nullish(),
+  nearbyMetro: zod.string().nullish(),
+  nearbySchool: zod.string().nullish(),
+  nearbyHospital: zod.string().nullish(),
   createdAt: zod.date(),
   updatedAt: zod.date(),
 });

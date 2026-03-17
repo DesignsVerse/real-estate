@@ -36,6 +36,13 @@ function propertyToResponse(p: typeof propertiesTable.$inferSelect) {
     agentPhone: p.agentPhone ?? null,
     agentEmail: p.agentEmail ?? null,
     featured: p.featured,
+    possessionStatus: p.possessionStatus ?? null,
+    possessionDate: p.possessionDate ? p.possessionDate.toISOString() : null,
+    facing: p.facing ?? null,
+    vastuCompliant: p.vastuCompliant ?? null,
+    nearbyMetro: p.nearbyMetro ?? null,
+    nearbySchool: p.nearbySchool ?? null,
+    nearbyHospital: p.nearbyHospital ?? null,
     createdAt: p.createdAt.toISOString(),
     updatedAt: p.updatedAt.toISOString(),
   };
@@ -123,6 +130,13 @@ router.post("/", async (req: Request, res: Response) => {
       agentPhone: data.agentPhone,
       agentEmail: data.agentEmail,
       featured: data.featured ?? false,
+      possessionStatus: data.possessionStatus ?? "ready_to_move",
+      possessionDate: data.possessionDate ? new Date(data.possessionDate) : null,
+      facing: data.facing ?? null,
+      vastuCompliant: data.vastuCompliant ?? false,
+      nearbyMetro: data.nearbyMetro ?? null,
+      nearbySchool: data.nearbySchool ?? null,
+      nearbyHospital: data.nearbyHospital ?? null,
     })
     .returning();
   res.status(201).json(propertyToResponse(created));
@@ -166,6 +180,13 @@ router.put("/:id", async (req: Request, res: Response) => {
   if (data.agentPhone !== undefined) updateData.agentPhone = data.agentPhone;
   if (data.agentEmail !== undefined) updateData.agentEmail = data.agentEmail;
   if (data.featured !== undefined) updateData.featured = data.featured;
+  if (data.possessionStatus !== undefined) updateData.possessionStatus = data.possessionStatus;
+  if (data.possessionDate !== undefined) updateData.possessionDate = data.possessionDate ? new Date(data.possessionDate) : null;
+  if (data.facing !== undefined) updateData.facing = data.facing;
+  if (data.vastuCompliant !== undefined) updateData.vastuCompliant = data.vastuCompliant;
+  if (data.nearbyMetro !== undefined) updateData.nearbyMetro = data.nearbyMetro;
+  if (data.nearbySchool !== undefined) updateData.nearbySchool = data.nearbySchool;
+  if (data.nearbyHospital !== undefined) updateData.nearbyHospital = data.nearbyHospital;
 
   updateData.updatedAt = new Date();
 

@@ -26,4 +26,11 @@ export interface UpdatePropertyInput {
   agentPhone?: string | null;
   agentEmail?: string | null;
   featured?: boolean;
+  possessionStatus?: string | null;
+  possessionDate?: Date | null;
+  facing?: string | null;
+  vastuCompliant?: boolean | null;
+  nearbyMetro?: string | null;
+  nearbySchool?: string | null;
+  nearbyHospital?: string | null;
 }

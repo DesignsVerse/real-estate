@@ -33,6 +33,15 @@ export interface Property {
   agentPhone?: string | null;
   agentEmail?: string | null;
   featured: boolean;
+  /** ready_to_move | under_construction | new_launch */
+  possessionStatus?: string | null;
+  possessionDate?: Date | null;
+  /** East | West | North | South | North-East | North-West | South-East | South-West */
+  facing?: string | null;
+  vastuCompliant?: boolean | null;
+  nearbyMetro?: string | null;
+  nearbySchool?: string | null;
+  nearbyHospital?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

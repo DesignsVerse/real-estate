@@ -568,6 +568,30 @@ components:
           nullable: true
         featured:
           type: boolean
+        possessionStatus:
+          type: string
+          nullable: true
+          description: "ready_to_move | under_construction | new_launch"
+        possessionDate:
+          type: string
+          format: date-time
+          nullable: true
+        facing:
+          type: string
+          nullable: true
+          description: "East | West | North | South | North-East | North-West | South-East | South-West"
+        vastuCompliant:
+          type: boolean
+          nullable: true
+        nearbyMetro:
+          type: string
+          nullable: true
+        nearbySchool:
+          type: string
+          nullable: true
+        nearbyHospital:
+          type: string
+          nullable: true
         createdAt:
           type: string
           format: date-time
@@ -660,6 +684,28 @@ components:
         featured:
           type: boolean
           default: false
+        possessionStatus:
+          type: string
+          nullable: true
+        possessionDate:
+          type: string
+          format: date-time
+          nullable: true
+        facing:
+          type: string
+          nullable: true
+        vastuCompliant:
+          type: boolean
+          nullable: true
+        nearbyMetro:
+          type: string
+          nullable: true
+        nearbySchool:
+          type: string
+          nullable: true
+        nearbyHospital:
+          type: string
+          nullable: true
       required: [title, price, type, propertyType, bedrooms, bathrooms, area, location]
 
     UpdatePropertyInput:
@@ -710,6 +756,28 @@ components:
           nullable: true
         featured:
           type: boolean
+        possessionStatus:
+          type: string
+          nullable: true
+        possessionDate:
+          type: string
+          format: date-time
+          nullable: true
+        facing:
+          type: string
+          nullable: true
+        vastuCompliant:
+          type: boolean
+          nullable: true
+        nearbyMetro:
+          type: string
+          nullable: true
+        nearbySchool:
+          type: string
+          nullable: true
+        nearbyHospital:
+          type: string
+          nullable: true
 
     Inquiry:
       type: object

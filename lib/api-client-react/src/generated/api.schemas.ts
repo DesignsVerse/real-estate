@@ -52,6 +52,15 @@ export interface Property {
   agentPhone?: string | null;
   agentEmail?: string | null;
   featured: boolean;
+  /** ready_to_move | under_construction | new_launch */
+  possessionStatus?: string | null;
+  possessionDate?: string | null;
+  /** East | West | North | South | North-East | North-West | South-East | South-West */
+  facing?: string | null;
+  vastuCompliant?: boolean | null;
+  nearbyMetro?: string | null;
+  nearbySchool?: string | null;
+  nearbyHospital?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -85,6 +94,13 @@ export interface CreatePropertyInput {
   agentPhone?: string | null;
   agentEmail?: string | null;
   featured?: boolean;
+  possessionStatus?: string | null;
+  possessionDate?: string | null;
+  facing?: string | null;
+  vastuCompliant?: boolean | null;
+  nearbyMetro?: string | null;
+  nearbySchool?: string | null;
+  nearbyHospital?: string | null;
 }
 
 export interface UpdatePropertyInput {
@@ -107,6 +123,13 @@ export interface UpdatePropertyInput {
   agentPhone?: string | null;
   agentEmail?: string | null;
   featured?: boolean;
+  possessionStatus?: string | null;
+  possessionDate?: string | null;
+  facing?: string | null;
+  vastuCompliant?: boolean | null;
+  nearbyMetro?: string | null;
+  nearbySchool?: string | null;
+  nearbyHospital?: string | null;
 }
 
 export interface Inquiry {
