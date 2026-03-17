@@ -1,0 +1,265 @@
+You are a senior full-stack engineer and system architect.
+
+Your task is to generate a full-stack Proof of Concept for a Real Estate Platform using Next.js.
+
+The platform must include two major parts:
+
+Public real estate website for buyers/renters
+
+Broker dashboard (CRM) for managing properties, clients, visits, and deals
+
+Use modern clean architecture and scalable design.
+
+TECH STACK
+
+Frontend + Backend
+
+Next.js (App Router)
+
+TypeScript
+
+Server Components where possible
+
+Styling
+
+TailwindCSS
+
+Component-based UI
+
+Database
+
+PostgreSQL
+
+ORM
+
+Prisma
+
+Authentication
+
+Auth.js (NextAuth)
+
+File Upload
+
+Cloudinary
+
+Email Notifications
+
+Resend
+
+GOAL
+
+Build a real estate platform where:
+
+Users can:
+
+Browse properties
+
+Search properties
+
+View property details
+
+Request property visits
+
+Send inquiries
+
+Brokers/Admin can:
+
+Manage properties
+
+Manage client inquiries
+
+Schedule site visits
+
+Track deals
+
+View analytics dashboard
+
+PUBLIC WEBSITE FEATURES
+
+Home Page
+
+Featured properties
+
+Search bar
+
+Property categories
+
+Property Listing Page
+Users can filter properties by:
+
+location
+
+price range
+
+property type
+
+bedrooms
+
+bathrooms
+
+Property Detail Page
+Display:
+
+property images
+
+description
+
+price
+
+amenities
+
+location
+
+agent details
+
+Users should be able to:
+
+send inquiry
+
+request site visit
+
+save property
+
+INQUIRY SYSTEM
+
+Users can submit:
+
+name
+phone
+email
+message
+property_id
+
+These inquiries should appear in the broker dashboard.
+
+BROKER DASHBOARD FEATURES
+
+Property Management
+Brokers can:
+
+add property
+
+edit property
+
+upload images
+
+mark property as sold/rented
+
+Client Inquiry Management
+
+view inquiries
+
+update lead status
+
+contact client
+
+Site Visit Scheduling
+
+Brokers can schedule property visits.
+
+Visit fields:
+
+client_name
+property_id
+visit_date
+notes
+status
+
+Deal Tracking
+
+Once negotiation starts brokers can track deals.
+
+Deal fields:
+
+property_id
+client_name
+offer_price
+commission
+deal_stage
+
+DASHBOARD ANALYTICS
+
+Display:
+
+total properties
+
+active inquiries
+
+scheduled visits
+
+deals in progress
+
+closed deals
+
+DATABASE TABLES
+
+Generate Prisma schema with relations for:
+
+User
+Property
+PropertyImage
+Inquiry
+Client
+SiteVisit
+Deal
+
+NEXT.JS FOLDER STRUCTURE
+
+/app
+/page.tsx
+/properties
+/properties/[id]
+/search
+/contact
+
+/dashboard
+/dashboard/properties
+/dashboard/inquiries
+/dashboard/visits
+/dashboard/deals
+
+/api
+/api/properties
+/api/inquiries
+/api/visits
+/api/deals
+
+/components
+/lib
+/prisma
+/utils
+/types
+
+API REQUIREMENTS
+
+Generate APIs or server actions for:
+
+Property CRUD
+Inquiry creation
+Visit scheduling
+Deal updates
+Search and filters
+
+BUSINESS LOGIC
+
+Implement:
+
+Property search filters
+Inquiry submission
+Broker lead tracking
+Visit scheduling system
+
+DELIVERABLES
+
+Generate:
+
+Prisma schema
+Database migrations
+Next.js folder structure
+API routes
+Dashboard pages
+Public property listing UI
+Property detail page
+Inquiry form
+
+The system should be clean, modular, and scalable while optimized for a Proof of Concept.

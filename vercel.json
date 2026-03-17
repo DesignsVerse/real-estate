@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "buildCommand": "pnpm --filter @workspace/real-estate run build && pnpm --filter @workspace/api-server run build",
+  "outputDirectory": "artifacts/real-estate/dist",
+  "installCommand": "pnpm install",
+  "functions": {
+    "artifacts/api-server/dist/index.cjs": {
+      "runtime": "nodejs22.x"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://your-api-server.vercel.app/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

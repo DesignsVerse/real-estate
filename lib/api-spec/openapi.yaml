@@ -1,22 +1,33 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Real Estate Platform API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: properties
+    description: Property management
+  - name: inquiries
+    description: Inquiry management
+  - name: visits
+    description: Site visit scheduling
+  - name: deals
+    description: Deal tracking
+  - name: analytics
+    description: Dashboard analytics
+  - name: auth
+    description: Authentication
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +35,440 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /properties:
+    get:
+      operationId: listProperties
+      tags: [properties]
+      summary: List properties with optional filters
+      parameters:
+        - name: location
+          in: query
+          schema:
+            type: string
+        - name: type
+          in: query
+          schema:
+            type: string
+        - name: minPrice
+          in: query
+          schema:
+            type: number
+        - name: maxPrice
+          in: query
+          schema:
+            type: number
+        - name: bedrooms
+          in: query
+          schema:
+            type: number
+        - name: bathrooms
+          in: query
+          schema:
+            type: number
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: featured
+          in: query
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 12
+      responses:
+        "200":
+          description: List of properties
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PropertyListResponse"
+
+    post:
+      operationId: createProperty
+      tags: [properties]
+      summary: Create a new property
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePropertyInput"
+      responses:
+        "201":
+          description: Created property
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Property"
+
+  /properties/{id}:
+    get:
+      operationId: getProperty
+      tags: [properties]
+      summary: Get property by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Property details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Property"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    put:
+      operationId: updateProperty
+      tags: [properties]
+      summary: Update a property
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePropertyInput"
+      responses:
+        "200":
+          description: Updated property
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Property"
+
+    delete:
+      operationId: deleteProperty
+      tags: [properties]
+      summary: Delete a property
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /inquiries:
+    get:
+      operationId: listInquiries
+      tags: [inquiries]
+      summary: List all inquiries
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: propertyId
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: List of inquiries
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InquiryListResponse"
+
+    post:
+      operationId: createInquiry
+      tags: [inquiries]
+      summary: Submit a property inquiry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInquiryInput"
+      responses:
+        "201":
+          description: Created inquiry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Inquiry"
+
+  /inquiries/{id}:
+    get:
+      operationId: getInquiry
+      tags: [inquiries]
+      summary: Get inquiry by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Inquiry details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Inquiry"
+
+    put:
+      operationId: updateInquiry
+      tags: [inquiries]
+      summary: Update inquiry status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateInquiryInput"
+      responses:
+        "200":
+          description: Updated inquiry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Inquiry"
+
+  /visits:
+    get:
+      operationId: listVisits
+      tags: [visits]
+      summary: List all site visits
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: propertyId
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: List of visits
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VisitListResponse"
+
+    post:
+      operationId: createVisit
+      tags: [visits]
+      summary: Schedule a site visit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateVisitInput"
+      responses:
+        "201":
+          description: Created visit
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Visit"
+
+  /visits/{id}:
+    get:
+      operationId: getVisit
+      tags: [visits]
+      summary: Get visit by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Visit details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Visit"
+
+    put:
+      operationId: updateVisit
+      tags: [visits]
+      summary: Update visit
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateVisitInput"
+      responses:
+        "200":
+          description: Updated visit
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Visit"
+
+  /deals:
+    get:
+      operationId: listDeals
+      tags: [deals]
+      summary: List all deals
+      parameters:
+        - name: stage
+          in: query
+          schema:
+            type: string
+        - name: propertyId
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: List of deals
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DealListResponse"
+
+    post:
+      operationId: createDeal
+      tags: [deals]
+      summary: Create a new deal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDealInput"
+      responses:
+        "201":
+          description: Created deal
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Deal"
+
+  /deals/{id}:
+    get:
+      operationId: getDeal
+      tags: [deals]
+      summary: Get deal by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deal details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Deal"
+
+    put:
+      operationId: updateDeal
+      tags: [deals]
+      summary: Update deal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDealInput"
+      responses:
+        "200":
+          description: Updated deal
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Deal"
+
+  /analytics/dashboard:
+    get:
+      operationId: getDashboardAnalytics
+      tags: [analytics]
+      summary: Get dashboard analytics
+      responses:
+        "200":
+          description: Analytics data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardAnalytics"
+
 components:
   schemas:
     HealthStatus:
@@ -31,6 +476,567 @@ components:
       properties:
         status:
           type: string
-      required:
-        - status
+      required: [status]
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+      required: [error]
+
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      required: [success]
+
+    PropertyImage:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+        alt:
+          type: string
+        isPrimary:
+          type: boolean
+      required: [id, url]
+
+    Property:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        type:
+          type: string
+          description: "sale | rent"
+        propertyType:
+          type: string
+          description: "apartment | house | villa | commercial | land"
+        status:
+          type: string
+          description: "active | sold | rented | inactive"
+        bedrooms:
+          type: integer
+        bathrooms:
+          type: integer
+        area:
+          type: number
+        location:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        latitude:
+          type: number
+          nullable: true
+        longitude:
+          type: number
+          nullable: true
+        amenities:
+          type: array
+          items:
+            type: string
+        images:
+          type: array
+          items:
+            $ref: "#/components/schemas/PropertyImage"
+        agentName:
+          type: string
+          nullable: true
+        agentPhone:
+          type: string
+          nullable: true
+        agentEmail:
+          type: string
+          nullable: true
+        featured:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - price
+        - type
+        - propertyType
+        - status
+        - location
+        - bedrooms
+        - bathrooms
+        - area
+        - images
+        - featured
+        - createdAt
+        - updatedAt
+
+    PropertyListResponse:
+      type: object
+      properties:
+        properties:
+          type: array
+          items:
+            $ref: "#/components/schemas/Property"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+        totalPages:
+          type: integer
+      required: [properties, total, page, limit, totalPages]
+
+    CreatePropertyInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        type:
+          type: string
+        propertyType:
+          type: string
+        bedrooms:
+          type: integer
+        bathrooms:
+          type: integer
+        area:
+          type: number
+        location:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        latitude:
+          type: number
+          nullable: true
+        longitude:
+          type: number
+          nullable: true
+        amenities:
+          type: array
+          items:
+            type: string
+        imageUrls:
+          type: array
+          items:
+            type: string
+        agentName:
+          type: string
+          nullable: true
+        agentPhone:
+          type: string
+          nullable: true
+        agentEmail:
+          type: string
+          nullable: true
+        featured:
+          type: boolean
+          default: false
+      required: [title, price, type, propertyType, bedrooms, bathrooms, area, location]
+
+    UpdatePropertyInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        type:
+          type: string
+        propertyType:
+          type: string
+        status:
+          type: string
+        bedrooms:
+          type: integer
+        bathrooms:
+          type: integer
+        area:
+          type: number
+        location:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        amenities:
+          type: array
+          items:
+            type: string
+        imageUrls:
+          type: array
+          items:
+            type: string
+        agentName:
+          type: string
+          nullable: true
+        agentPhone:
+          type: string
+          nullable: true
+        agentEmail:
+          type: string
+          nullable: true
+        featured:
+          type: boolean
+
+    Inquiry:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        email:
+          type: string
+        message:
+          type: string
+        propertyId:
+          type: string
+          nullable: true
+        propertyTitle:
+          type: string
+          nullable: true
+        status:
+          type: string
+          description: "new | contacted | qualified | closed"
+        notes:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, name, email, message, status, createdAt, updatedAt]
+
+    InquiryListResponse:
+      type: object
+      properties:
+        inquiries:
+          type: array
+          items:
+            $ref: "#/components/schemas/Inquiry"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+        totalPages:
+          type: integer
+      required: [inquiries, total, page, limit, totalPages]
+
+    CreateInquiryInput:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        email:
+          type: string
+        message:
+          type: string
+        propertyId:
+          type: string
+          nullable: true
+      required: [name, email, message]
+
+    UpdateInquiryInput:
+      type: object
+      properties:
+        status:
+          type: string
+        notes:
+          type: string
+          nullable: true
+
+    Visit:
+      type: object
+      properties:
+        id:
+          type: string
+        clientName:
+          type: string
+        clientEmail:
+          type: string
+          nullable: true
+        clientPhone:
+          type: string
+          nullable: true
+        propertyId:
+          type: string
+          nullable: true
+        propertyTitle:
+          type: string
+          nullable: true
+        visitDate:
+          type: string
+          format: date-time
+        notes:
+          type: string
+          nullable: true
+        status:
+          type: string
+          description: "scheduled | completed | cancelled"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, clientName, visitDate, status, createdAt, updatedAt]
+
+    VisitListResponse:
+      type: object
+      properties:
+        visits:
+          type: array
+          items:
+            $ref: "#/components/schemas/Visit"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+        totalPages:
+          type: integer
+      required: [visits, total, page, limit, totalPages]
+
+    CreateVisitInput:
+      type: object
+      properties:
+        clientName:
+          type: string
+        clientEmail:
+          type: string
+          nullable: true
+        clientPhone:
+          type: string
+          nullable: true
+        propertyId:
+          type: string
+          nullable: true
+        visitDate:
+          type: string
+          format: date-time
+        notes:
+          type: string
+          nullable: true
+      required: [clientName, visitDate]
+
+    UpdateVisitInput:
+      type: object
+      properties:
+        clientName:
+          type: string
+        clientEmail:
+          type: string
+          nullable: true
+        clientPhone:
+          type: string
+          nullable: true
+        visitDate:
+          type: string
+          format: date-time
+        notes:
+          type: string
+          nullable: true
+        status:
+          type: string
+
+    Deal:
+      type: object
+      properties:
+        id:
+          type: string
+        propertyId:
+          type: string
+          nullable: true
+        propertyTitle:
+          type: string
+          nullable: true
+        clientName:
+          type: string
+        clientEmail:
+          type: string
+          nullable: true
+        clientPhone:
+          type: string
+          nullable: true
+        offerPrice:
+          type: number
+        commission:
+          type: number
+          nullable: true
+        dealStage:
+          type: string
+          description: "lead | negotiation | contract | closed | lost"
+        notes:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, clientName, offerPrice, dealStage, createdAt, updatedAt]
+
+    DealListResponse:
+      type: object
+      properties:
+        deals:
+          type: array
+          items:
+            $ref: "#/components/schemas/Deal"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+        totalPages:
+          type: integer
+      required: [deals, total, page, limit, totalPages]
+
+    CreateDealInput:
+      type: object
+      properties:
+        propertyId:
+          type: string
+          nullable: true
+        clientName:
+          type: string
+        clientEmail:
+          type: string
+          nullable: true
+        clientPhone:
+          type: string
+          nullable: true
+        offerPrice:
+          type: number
+        commission:
+          type: number
+          nullable: true
+        dealStage:
+          type: string
+          default: lead
+        notes:
+          type: string
+          nullable: true
+      required: [clientName, offerPrice]
+
+    UpdateDealInput:
+      type: object
+      properties:
+        propertyId:
+          type: string
+          nullable: true
+        clientName:
+          type: string
+        clientEmail:
+          type: string
+          nullable: true
+        clientPhone:
+          type: string
+          nullable: true
+        offerPrice:
+          type: number
+        commission:
+          type: number
+          nullable: true
+        dealStage:
+          type: string
+        notes:
+          type: string
+          nullable: true
+
+    DashboardAnalytics:
+      type: object
+      properties:
+        totalProperties:
+          type: integer
+        activeProperties:
+          type: integer
+        soldProperties:
+          type: integer
+        rentedProperties:
+          type: integer
+        totalInquiries:
+          type: integer
+        activeInquiries:
+          type: integer
+        scheduledVisits:
+          type: integer
+        completedVisits:
+          type: integer
+        totalDeals:
+          type: integer
+        dealsInProgress:
+          type: integer
+        closedDeals:
+          type: integer
+        totalRevenue:
+          type: number
+        recentInquiries:
+          type: array
+          items:
+            $ref: "#/components/schemas/Inquiry"
+        recentVisits:
+          type: array
+          items:
+            $ref: "#/components/schemas/Visit"
+      required:
+        - totalProperties
+        - activeProperties
+        - soldProperties
+        - rentedProperties
+        - totalInquiries
+        - activeInquiries
+        - scheduledVisits
+        - completedVisits
+        - totalDeals
+        - dealsInProgress
+        - closedDeals
+        - totalRevenue
+        - recentInquiries
+        - recentVisits
