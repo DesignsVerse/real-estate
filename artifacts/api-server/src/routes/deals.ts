@@ -2,6 +2,7 @@ import { Router, type IRouter, type Request, type Response } from "express";
 import { db } from "@workspace/db";
 import { dealsTable, propertiesTable } from "@workspace/db/schema";
 import { eq, and, type SQL } from "drizzle-orm";
+import { getString } from "../utils/getString";
 
 const router: IRouter = Router();
 
@@ -26,12 +27,10 @@ function dealToResponse(
 }
 
 router.get("/", async (req: Request, res: Response) => {
-  const {
-    stage,
-    propertyId,
-    page = "1",
-    limit = "20",
-  } = req.query as Record<string, string>;
+  const stage = getString(req.query.stage);
+  const propertyId = getString(req.query.propertyId);
+  const page = getString(req.query.page) || "1";
+  const limit = getString(req.query.limit) || "20";
 
   const conditions: SQL[] = [];
   if (stage) conditions.push(eq(dealsTable.dealStage, stage));
@@ -100,7 +99,7 @@ router.post("/", async (req: Request, res: Response) => {
 });
 
 router.get("/:id", async (req: Request, res: Response) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(getString(req.params.id));
   const [d] = await db
     .select()
     .from(dealsTable)
@@ -113,7 +112,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 });
 
 router.put("/:id", async (req: Request, res: Response) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(getString(req.params.id));
   const data = req.body;
   const updateData: Partial<typeof dealsTable.$inferInsert> = {
     updatedAt: new Date(),

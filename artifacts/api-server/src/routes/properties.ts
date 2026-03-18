@@ -2,6 +2,7 @@ import { Router, type IRouter, type Request, type Response } from "express";
 import { db } from "@workspace/db";
 import { propertiesTable } from "@workspace/db/schema";
 import { eq, like, gte, lte, and, type SQL } from "drizzle-orm";
+import { getString } from "../utils/getString";
 
 const router: IRouter = Router();
 
@@ -49,18 +50,16 @@ function propertyToResponse(p: typeof propertiesTable.$inferSelect) {
 }
 
 router.get("/", async (req: Request, res: Response) => {
-  const {
-    location,
-    type,
-    minPrice,
-    maxPrice,
-    bedrooms,
-    bathrooms,
-    status,
-    featured,
-    page = "1",
-    limit = "12",
-  } = req.query as Record<string, string>;
+  const location = getString(req.query.location);
+  const type = getString(req.query.type);
+  const minPrice = getString(req.query.minPrice);
+  const maxPrice = getString(req.query.maxPrice);
+  const bedrooms = getString(req.query.bedrooms);
+  const bathrooms = getString(req.query.bathrooms);
+  const status = getString(req.query.status);
+  const featured = getString(req.query.featured);
+  const page = getString(req.query.page) || "1";
+  const limit = getString(req.query.limit) || "12";
 
   const conditions: SQL[] = [];
   if (location)
@@ -143,7 +142,7 @@ router.post("/", async (req: Request, res: Response) => {
 });
 
 router.get("/:id", async (req: Request, res: Response) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(getString(req.params.id));
   const [prop] = await db
     .select()
     .from(propertiesTable)
@@ -156,7 +155,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 });
 
 router.put("/:id", async (req: Request, res: Response) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(getString(req.params.id));
   const data = req.body;
   const updateData: Partial<typeof propertiesTable.$inferInsert> = {};
 
@@ -204,7 +203,7 @@ router.put("/:id", async (req: Request, res: Response) => {
 });
 
 router.delete("/:id", async (req: Request, res: Response) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(getString(req.params.id));
   await db.delete(propertiesTable).where(eq(propertiesTable.id, id));
   res.json({ success: true, message: "Property deleted" });
 });
