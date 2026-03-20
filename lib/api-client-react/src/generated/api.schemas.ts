@@ -283,6 +283,7 @@ export type ListPropertiesParams = {
   featured?: boolean;
   page?: number;
   limit?: number;
+  propertyType?: string;
 };
 
 export type ListInquiriesParams = {

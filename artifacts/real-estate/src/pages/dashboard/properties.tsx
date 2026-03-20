@@ -1,7 +1,7 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useListProperties, useCreateProperty, useDeleteProperty } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
-import { Plus, Edit, Trash2, MapPin, MoreHorizontal } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, MapPin, MoreHorizontal } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
